@@ -3,8 +3,8 @@ defmodule GCloudex.CloudStorage.Impl do
   @moduledoc """
   Wrapper for Google Cloud Storage API.
   """
-  defmacro __using__(:cloud_storage) do 
-    quote do 
+  defmacro __using__(:cloud_storage) do
+    quote do
       use GCloudex.CloudStorage.Request
 
       @endpoint "storage.googleapis.com"
@@ -345,6 +345,14 @@ defmodule GCloudex.CloudStorage.Impl do
         end
       end
 
+      @spec put_object(bucket :: binary, filepath :: binary, data :: binary, bucket_path :: binary) :: HTTPResponse.t
+      def put_object(bucket, filepath, data, bucket_path \\ :empty) do
+        case bucket_path do
+          :empty -> request_query :put, bucket, [], data, filepath
+          _      -> request_query :put, bucket, [], data, bucket_path
+        end
+      end
+
       @doc"""
       Copies the specified 'source_object' into the given 'new_bucket' as
       'new_object'.
@@ -384,7 +392,7 @@ defmodule GCloudex.CloudStorage.Impl do
       defp parse_query_params([{param, val} = _head | []], query), do: query <> param <> "=" <> val
       defp parse_query_params([{param, val} = _head | tail], query) do
         parse_query_params tail, query <> param <> "=" <> val <> "&"
-      end     
+      end
     end
-  end  
+  end
 end
