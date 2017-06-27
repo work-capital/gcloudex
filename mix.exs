@@ -1,13 +1,15 @@
 defmodule GCloudex.Mixfile do
   use Mix.Project
 
+  @version "0.4.4"
+
   def project do
     [
      app: :gcloudex,
-     version: "0.3.2",
+     version: @version,
      elixir: "~> 1.2",
      description: "Google Cloud for Elixir. Friendly set of wrappers for "
-                   <> "Google Cloud Platform services' API's.",
+                   <> "Google Cloud Platform API's.",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      deps: deps,
@@ -35,8 +37,10 @@ defmodule GCloudex.Mixfile do
     [
       {:httpoison, "~> 0.8.3"},
       {:goth,      "~> 0.1.2"},
-      {:poison,    "~> 2.1.0"},
-      {:credo,     "~> 0.3.13", only: [:dev, :test]}
+      {:poison,    "~> 1.2 or ~> 2.1"},
+      {:credo,     "~> 0.3.13", only: [:dev, :test]},
+      {:ex_doc,    ">= 0.11.0", only: [:dev]},
+      {:earmark,   ">= 0.0.0"}
     ]
   end
 

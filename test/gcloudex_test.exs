@@ -1,8 +1,10 @@
 defmodule GCloudexTest do
   use ExUnit.Case
-  doctest Gcloudex
+  doctest GCloudex
 
-  test "the truth" do
-    assert 1 + 1 == 2
+  test "get_project_id" do 
+    project_id = "dummy_project_id"
+    
+    assert project_id == GCloudex.get_project_id
   end
 end
