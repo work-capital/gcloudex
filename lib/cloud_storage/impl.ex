@@ -323,9 +323,7 @@ defmodule GCloudex.CloudStorage.Impl do
       ### PUT Object ###
       ##################
 
-      def put_object(bucket, filepath, data \\ nil, bucket_path \\ :empty) do
-        put_object(bucket, filepath, data , bucket_path)
-      end
+
 
       @doc"""
       Uploads the file in the given 'filepath' to the specified 'bucket'.
@@ -340,7 +338,7 @@ defmodule GCloudex.CloudStorage.Impl do
              will create the directories if they do not exist.
       """
       @spec put_object(bucket :: binary, filepath :: binary, bucket_path :: binary) :: HTTPResponse.t
-      def put_object(bucket, filepath, data, bucket_path) when is_nil(data) do
+      def put_object(bucket, filepath, bucket_path \\ :empty)  do
         body = {:file, filepath}
 
         case bucket_path do
@@ -353,11 +351,11 @@ defmodule GCloudex.CloudStorage.Impl do
       Same as put_object/3,
       just gets the body of the file in addition to the file path
       """
-      @spec put_object(bucket :: binary, filepath :: binary, data :: binary, bucket_path :: binary) :: HTTPResponse.t
-      def put_object(bucket, filepath, data, bucket_path) do
+      @spec put_object_content(bucket :: binary, filepath :: binary, file_content :: binary, bucket_path :: binary) :: HTTPResponse.t
+      def put_object_content(bucket, filename, file_content, bucket_path \\:empty) do
         case bucket_path do
-          :empty -> request_query :put, bucket, [], data, filepath
-          _      -> request_query :put, bucket, [], data, bucket_path
+          :empty -> request_query :put, bucket, [], file_content, filename
+          _      -> request_query :put, bucket, [], file_content, bucket_path
         end
       end
 
