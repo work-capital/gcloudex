@@ -323,6 +323,10 @@ defmodule GCloudex.CloudStorage.Impl do
       ### PUT Object ###
       ##################
 
+      def put_object(bucket, filepath, data \\ nil, bucket_path \\ :empty) do
+        put_object(bucket, filepath, data , bucket_path)
+      end
+
       @doc"""
       Uploads the file in the given 'filepath' to the specified 'bucket'.
       If a 'bucket_path' is specified then the filename must be included at
@@ -336,7 +340,7 @@ defmodule GCloudex.CloudStorage.Impl do
              will create the directories if they do not exist.
       """
       @spec put_object(bucket :: binary, filepath :: binary, bucket_path :: binary) :: HTTPResponse.t
-      def put_object(bucket, filepath, bucket_path \\ :empty) do
+      def put_object(bucket, filepath, data, bucket_path) when is_nil(data) do
         body = {:file, filepath}
 
         case bucket_path do
@@ -351,12 +355,13 @@ defmodule GCloudex.CloudStorage.Impl do
       """
       @spec put_object(bucket :: binary, filepath :: binary, data :: binary, bucket_path :: binary) :: HTTPResponse.t
       def put_object(bucket, filepath, data, bucket_path) do
-        # case bucket_path do
-          # :empty -> request_query :put, bucket, [], data, filepath
-          # _      ->
-             request_query :put, bucket, [], data, bucket_path
-        # end
+        case bucket_path do
+          :empty -> request_query :put, bucket, [], data, filepath
+          _      -> request_query :put, bucket, [], data, bucket_path
+        end
       end
+
+
 
       @doc"""
       Copies the specified 'source_object' into the given 'new_bucket' as
