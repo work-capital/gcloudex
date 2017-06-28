@@ -345,12 +345,17 @@ defmodule GCloudex.CloudStorage.Impl do
         end
       end
 
+      @doc """
+      Same as put_object/3,
+      just gets the body of the file in addition to the file path
+      """
       @spec put_object(bucket :: binary, filepath :: binary, data :: binary, bucket_path :: binary) :: HTTPResponse.t
-      def put_object(bucket, filepath, data, bucket_path \\ :empty) do
-        case bucket_path do
-          :empty -> request_query :put, bucket, [], data, filepath
-          _      -> request_query :put, bucket, [], data, bucket_path
-        end
+      def put_object(bucket, filepath, data, bucket_path) do
+        # case bucket_path do
+          # :empty -> request_query :put, bucket, [], data, filepath
+          # _      ->
+             request_query :put, bucket, [], data, bucket_path
+        # end
       end
 
       @doc"""
