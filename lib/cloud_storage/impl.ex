@@ -354,8 +354,8 @@ defmodule GCloudex.CloudStorage.Impl do
       @spec put_object_content(bucket :: binary, filename :: binary, file_type :: binary, file_content :: binary, bucket_path :: binary) :: HTTPResponse.t
       def put_object_content(bucket, filename, file_type, file_content, bucket_path \\:empty) do
         case bucket_path do
-          :empty -> request_query :put, bucket, [{"Content-Type", "application/pdf"}], file_content, filename
-          _      -> request_query :put, bucket, [], file_content, bucket_path
+          :empty -> request_query :put, bucket, [{"Content-Type", file_type}], file_content, filename
+          _      -> request_query :put, bucket, [{"Content-Type", file_type}], file_content, bucket_path
         end
       end
 
