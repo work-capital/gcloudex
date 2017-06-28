@@ -351,10 +351,10 @@ defmodule GCloudex.CloudStorage.Impl do
       Same as put_object/3,
       just gets the body of the file in addition to the file path
       """
-      @spec put_object_content(bucket :: binary, filepath :: binary, file_content :: binary, bucket_path :: binary) :: HTTPResponse.t
-      def put_object_content(bucket, filename, file_content, bucket_path \\:empty) do
+      @spec put_object_content(bucket :: binary, filename :: binary, file_type :: binary, file_content :: binary, bucket_path :: binary) :: HTTPResponse.t
+      def put_object_content(bucket, filename, file_type, file_content, bucket_path \\:empty) do
         case bucket_path do
-          :empty -> request_query :put, bucket, [], file_content, filename
+          :empty -> request_query :put, bucket, [{"Content-Type", "application/pdf"}], file_content, filename
           _      -> request_query :put, bucket, [], file_content, bucket_path
         end
       end
