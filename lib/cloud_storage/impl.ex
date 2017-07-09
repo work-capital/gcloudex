@@ -3,8 +3,8 @@ defmodule GCloudex.CloudStorage.Impl do
   @moduledoc """
   Wrapper for Google Cloud Storage API.
   """
-  defmacro __using__(:cloud_storage) do 
-    quote do 
+  defmacro __using__(:cloud_storage) do
+    quote do
       use GCloudex.CloudStorage.Request
 
       @endpoint "storage.googleapis.com"
@@ -323,6 +323,8 @@ defmodule GCloudex.CloudStorage.Impl do
       ### PUT Object ###
       ##################
 
+
+
       @doc"""
       Uploads the file in the given 'filepath' to the specified 'bucket'.
       If a 'bucket_path' is specified then the filename must be included at
@@ -336,7 +338,7 @@ defmodule GCloudex.CloudStorage.Impl do
              will create the directories if they do not exist.
       """
       @spec put_object(bucket :: binary, filepath :: binary, bucket_path :: binary) :: HTTPResponse.t
-      def put_object(bucket, filepath, bucket_path \\ :empty) do
+      def put_object(bucket, filepath, bucket_path \\ :empty)  do
         body = {:file, filepath}
 
         case bucket_path do
@@ -344,6 +346,20 @@ defmodule GCloudex.CloudStorage.Impl do
           _      -> request_query :put, bucket, [], body, bucket_path
         end
       end
+
+      @doc """
+      Same as put_object/3,
+      just gets the body of the file in addition to the file path
+      """
+      @spec put_object_content(bucket :: binary, filename :: binary, file_type :: binary, file_content :: binary, bucket_path :: binary) :: HTTPResponse.t
+      def put_object_content(bucket, filename, file_type, file_content, bucket_path \\:empty) do
+        case bucket_path do
+          :empty -> request_query :put, bucket, [{"Content-Type", file_type}], file_content, filename
+          _      -> request_query :put, bucket, [{"Content-Type", file_type}], file_content, bucket_path
+        end
+      end
+
+
 
       @doc"""
       Copies the specified 'source_object' into the given 'new_bucket' as
@@ -384,7 +400,7 @@ defmodule GCloudex.CloudStorage.Impl do
       defp parse_query_params([{param, val} = _head | []], query), do: query <> param <> "=" <> val
       defp parse_query_params([{param, val} = _head | tail], query) do
         parse_query_params tail, query <> param <> "=" <> val <> "&"
-      end     
+      end
     end
-  end  
+  end
 end
