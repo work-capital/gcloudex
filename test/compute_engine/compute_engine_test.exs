@@ -1251,7 +1251,7 @@ defmodule ComputeEngineTest do
     assert expected == API.add_access_config zone, instance, interface, name, nat, fields
   end      
 
-  test "add_access_config (no fields no nat)" do 
+  test "add_access_config (no fields no nat no query)" do 
     zone      = "zone"
     instance  = "instance"
     interface = "interface"
@@ -1462,7 +1462,7 @@ defmodule ComputeEngineTest do
     assert expected == API.set_machine_type zone, instance, type, fields
   end    
 
-  test "set_metadata (no fields)" do 
+  test "set_metadata (no fields no query)" do 
     zone      = "zone"
     instance  = "instance"
     fp        = "fingerprint"
