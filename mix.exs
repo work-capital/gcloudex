@@ -35,7 +35,7 @@ defmodule GCloudex.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:httpoison, "~> 0.8.3"},
+      {:httpoison, "~> 0.11"},
       {:goth,      "~> 0.3"},
       {:poison,    "~> 3.0"},
       {:credo,     "~> 0.3.13", only: [:dev, :test]},
