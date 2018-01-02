@@ -328,24 +328,27 @@ defmodule GCloudex.CloudStorage.Impl do
       @doc"""
       Uploads the file in the given 'filepath' to the specified 'bucket'.
       If a 'bucket_path' is specified then the filename must be included at
-      the end:
+      the end,
+      If the 'file_type' is not specified, the default will be "application/octet-stream":
 
         put_object "somebucket",
                    "/home/user/Documents/this_file",
-                   "new_folder/some_other_folder/this_file"
+                   "new_folder/some_other_folder/this_file",
+                   "Application/pdf"
 
         => # This will upload the file to the directory in 'bucket_path' and
              will create the directories if they do not exist.
       """
-      @spec put_object(bucket :: binary, filepath :: binary, bucket_path :: binary) :: HTTPResponse.t
-      def put_object(bucket, filepath, bucket_path \\ :empty)  do
+      @spec put_object(bucket :: binary, filepath :: binary, bucket_path :: binary, file_type :: binary) :: HTTPResponse.t
+      def put_object(bucket, filepath, bucket_path \\ :empty, file_type \\ "application/octet-stream")  do
         body = {:file, filepath}
 
         case bucket_path do
-          :empty -> request_query :put, bucket, [], body, filepath
-          _      -> request_query :put, bucket, [], body, bucket_path
+          :empty -> request_query :put, bucket, [{"Content-Type", file_type}], body, filepath
+          _      -> request_query :put, bucket, [{"Content-Type", file_type}], body, bucket_path
         end
       end
+     
 
       @doc """
       Same as put_object/3,
