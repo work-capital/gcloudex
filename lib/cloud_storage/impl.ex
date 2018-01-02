@@ -174,7 +174,7 @@ defmodule GCloudex.CloudStorage.Impl do
       """
       @spec create_bucket(bucket :: binary, region :: binary, class :: binary) :: HTTPResponse.t
       def create_bucket(bucket, region, class) do
-        headers = [{"x-goog-project-id", @project}]file_type
+        headers = [{"x-goog-project-id", @project}]
 
         body =
           """
